@@ -21,6 +21,11 @@ public class Vector2d {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
+    @Override
     public String toString() {
         return "(" + x + "," + y + ")";
     }
@@ -34,21 +39,11 @@ public class Vector2d {
     }
 
     public Vector2d upperRight(Vector2d other) {
-        int newX, newY;
-
-        newX = Math.max(x, other.x);
-        newY = Math.max(y, other.y);
-
-        return new Vector2d(newX, newY);
+        return new Vector2d(Math.max(x, other.x), Math.max(y, other.y));
     }
 
     public Vector2d lowerLeft(Vector2d other) {
-        int newX, newY;
-
-        newX = Math.min(x, other.x);
-        newY = Math.min(y, other.y);
-
-        return new Vector2d(newX, newY);
+        return new Vector2d(Math.min(x, other.x), Math.min(y, other.y));
     }
 
     public Vector2d add(Vector2d other) {

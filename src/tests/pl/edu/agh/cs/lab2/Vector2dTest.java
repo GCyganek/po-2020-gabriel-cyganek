@@ -23,14 +23,14 @@ class Vector2dTest {
     @Test
     public void testVector2dEqualsToItself() {
         Vector2d vector = new Vector2d(1, 3);
-        assertTrue(vector.equals(vector));
+        assertEquals(vector, vector);
     }
 
     @Test
     public void testVector2dEqualsOtherDataType() {
         Vector2d vector = new Vector2d(1, 3);
         int test = 5;
-        assertFalse(vector.equals(test));
+        assertNotEquals(test, vector);
     }
 
     @Test

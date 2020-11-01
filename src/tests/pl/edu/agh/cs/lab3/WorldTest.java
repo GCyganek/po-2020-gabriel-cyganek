@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import pl.edu.agh.cs.lab2.MapDirection;
 import pl.edu.agh.cs.lab2.MoveDirection;
 import pl.edu.agh.cs.lab2.Vector2d;
+import pl.edu.agh.cs.lab4.RectangularMap;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -22,7 +23,7 @@ class WorldTest {
                         MoveDirection.BACKWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.RIGHT,
                         MoveDirection.LEFT, MoveDirection.LEFT)));
 
-        Animal animal = new Animal();
+        Animal animal = new Animal(new RectangularMap(4, 4));
         Vector2d[] allPositions = {new Vector2d(2, 3), new Vector2d(2, 4), new Vector2d(2, 3), new Vector2d(2, 2)};
         MapDirection[] allDirections = {MapDirection.EAST, MapDirection.SOUTH, MapDirection.EAST, MapDirection.NORTH};
         int positionIndex = 0;
@@ -50,7 +51,7 @@ class WorldTest {
                         MoveDirection.BACKWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.RIGHT,
                         MoveDirection.LEFT, MoveDirection.LEFT)));
 
-        Animal animal = new Animal();
+        Animal animal = new Animal(new RectangularMap(4, 4));
         Vector2d[] allPositions = {new Vector2d(2, 3), new Vector2d(2, 4), new Vector2d(2, 3), new Vector2d(2, 2)};
         MapDirection[] allDirections = {MapDirection.EAST, MapDirection.SOUTH, MapDirection.EAST, MapDirection.NORTH};
         int positionIndex = 0;
@@ -78,7 +79,7 @@ class WorldTest {
                     MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.FORWARD, MoveDirection.FORWARD,
                         MoveDirection.FORWARD, MoveDirection.FORWARD)));
 
-        Animal animal = new Animal();
+        Animal animal = new Animal(new RectangularMap(4, 4));
         Vector2d[] allPositions = {new Vector2d(2, 3), new Vector2d(2, 4), new Vector2d(2, 4),
                 new Vector2d(3, 4), new Vector2d(4, 4), new Vector2d(4, 4), new Vector2d(4, 4)};
         MapDirection[] allDirections = {MapDirection.EAST};

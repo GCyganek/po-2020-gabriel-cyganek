@@ -1,21 +1,19 @@
 package pl.edu.agh.cs.lab3;
 
 import pl.edu.agh.cs.lab2.MoveDirection;
+import pl.edu.agh.cs.lab2.Vector2d;
+import pl.edu.agh.cs.lab4.IWorldMap;
+import pl.edu.agh.cs.lab4.RectangularMap;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class World {
     public static void main(String[] args) {
-        Animal animal = new Animal();
-        System.out.println(animal);
-
-        OptionsParser optionsParser = new OptionsParser();
-        LinkedList<MoveDirection> directions = optionsParser.parse(args);
-
-        for (MoveDirection direction: directions) {
-            //System.out.println(direction);
-            animal.move(direction);
-            //System.out.println(animal);
-        }
+        List<MoveDirection> directions = new OptionsParser().parse(args);
+        IWorldMap map = new RectangularMap(10, 5);
+        map.place(new Animal(map));
+        map.place(new Animal(map,new Vector2d(3,4)));
+        map.run(directions);
     }
 }

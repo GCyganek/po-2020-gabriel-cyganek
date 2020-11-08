@@ -6,12 +6,12 @@ import pl.edu.agh.cs.lab2.Vector2d;
 import pl.edu.agh.cs.lab4.IWorldMap;
 
 public class Animal {
-    private IWorldMap map;
+    private final IWorldMap map;
     private MapDirection orientation = MapDirection.NORTH;
-    private Vector2d position = new Vector2d(2, 2);
+    private Vector2d position;
 
     public Animal(IWorldMap map) {
-        this.map = map;
+        this(map, new Vector2d(2, 2));
     }
 
     public Animal(IWorldMap map, Vector2d initialPosition) {

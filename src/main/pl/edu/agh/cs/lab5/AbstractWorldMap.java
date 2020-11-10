@@ -1,14 +1,3 @@
-/*
-
-10.
-
-11. Na tę chwilę Grass i Animal to jedyne klasy, które dziedziczyłyby po AbstractWorldElement i wydaje się, że
-stworzenie takiej klasy abstrakcyjnej, po którą mogłyby rozszerzać jest bezcelowe, gdyż nie zawierają one podobnych
-metod, pól, za bardzo się różnią
-
- */
-
-
 package pl.edu.agh.cs.lab5;
 
 import pl.edu.agh.cs.lab2.MoveDirection;

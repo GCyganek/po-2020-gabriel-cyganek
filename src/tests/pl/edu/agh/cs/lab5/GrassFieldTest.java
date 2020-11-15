@@ -21,7 +21,7 @@ class GrassFieldTest {
         //before placing animal on upper right corner
         assertTrue(map.canMoveTo(new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE)));
 
-        map.place(new Animal(map, new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE)));
+        new Animal(map, new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
         //after placing animal on upper right corner
         assertFalse(map.canMoveTo(new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE)));
@@ -52,8 +52,10 @@ class GrassFieldTest {
     void testPlaceTwoAnimalsOnTheSameField() {
         GrassField map = new GrassField(10);
 
-        assertTrue(map.place(new Animal(map, new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE))));
-        assertFalse(map.place(new Animal(map, new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE))));
+        new Animal(map, new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Animal(map, new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        });
     }
 
     @Test
@@ -64,7 +66,7 @@ class GrassFieldTest {
 
         for (int i = 0; i <= max; i++) {  // na ktoryms z tych pol na pewno jest pole z trawa
             for (int j = 0; j <= max; j++) {
-                assertTrue(map.place(new Animal(map, new Vector2d(i, j))));
+                new Animal(map, new Vector2d(i, j));
             }
         }
     }
@@ -73,7 +75,9 @@ class GrassFieldTest {
     void testPlaceOnFieldOutsideOfTheMap() {
         GrassField map = new GrassField(10);
 
-        map.place(new Animal(map, new Vector2d(-1, 0)));
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Animal(map, new Vector2d(-1, 0));
+        });
     }
 
     @Test
@@ -88,9 +92,6 @@ class GrassFieldTest {
         Animal animal1 = new Animal(map);
         Animal animal2 = new Animal(map, new Vector2d(3, 4));
 
-        map.place(animal1);
-        map.place(animal2);
-
         map.run(directions);
         assertEquals(animal1.getOrientation(), MapDirection.SOUTH);
         assertEquals(animal1.getPosition(), new Vector2d(2, 0));
@@ -103,7 +104,6 @@ class GrassFieldTest {
         GrassField map = new GrassField(10);
 
         Animal animal1 = new Animal(map, new Vector2d(5, 5));
-        map.place(animal1);
 
         assertTrue(map.isOccupied(animal1.getPosition()));
     }
@@ -132,7 +132,6 @@ class GrassFieldTest {
         Grass grass = new Grass(new Vector2d(4,4));
 
         Animal animal = new Animal(map, new Vector2d(5, 5));
-        map.place(animal);
 
         assertEquals(Optional.of(animal), map.objectAt(animal.getPosition()));
 

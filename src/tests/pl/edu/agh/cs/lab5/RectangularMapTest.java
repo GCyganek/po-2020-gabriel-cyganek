@@ -1,7 +1,6 @@
 package pl.edu.agh.cs.lab5;
 
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.css.Rect;
 import pl.edu.agh.cs.lab2.MapDirection;
 import pl.edu.agh.cs.lab2.MoveDirection;
 import pl.edu.agh.cs.lab2.Vector2d;
@@ -23,7 +22,7 @@ class RectangularMapTest {
         //before placing animal on upper right corner
         assertTrue(map.canMoveTo(new Vector2d(10, 10)));
 
-        map.place(new Animal(map, new Vector2d(10, 10)));
+        new Animal(map, new Vector2d(10, 10));
 
         //after placing animal on upper right corner
         assertFalse(map.canMoveTo(new Vector2d(10, 10)));
@@ -42,15 +41,19 @@ class RectangularMapTest {
     void testPlaceTwoAnimalsOnTheSameField() {
         RectangularMap map = new RectangularMap(10, 10);
 
-        assertTrue(map.place(new Animal(map, new Vector2d(10, 10))));
-        assertFalse(map.place(new Animal(map, new Vector2d(10, 10))));
+        new Animal(map, new Vector2d(10, 10));
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Animal(map, new Vector2d(10, 10));
+        });
     }
 
     @Test
     void testPlaceOnFieldOutsideOfTheMap() {
         RectangularMap map = new RectangularMap(10, 10);
 
-        map.place(new Animal(map, new Vector2d(-1, 0)));
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Animal(map, new Vector2d(-1, 10));
+        });
     }
 
     @Test
@@ -65,9 +68,6 @@ class RectangularMapTest {
         Animal animal1 = new Animal(map);
         Animal animal2 = new Animal(map, new Vector2d(3, 4));
 
-        map.place(animal1);
-        map.place(animal2);
-
         map.run(directions);
         assertEquals(animal1.getOrientation(), MapDirection.SOUTH);
         assertEquals(animal1.getPosition(), new Vector2d(2, 0));
@@ -80,7 +80,6 @@ class RectangularMapTest {
         RectangularMap map = new RectangularMap(10, 10);
 
         Animal animal1 = new Animal(map, new Vector2d(5, 5));
-        map.place(animal1);
 
         assertTrue(map.isOccupied(animal1.getPosition()));
     }
@@ -90,7 +89,6 @@ class RectangularMapTest {
         RectangularMap map = new RectangularMap(10, 10);
 
         Animal animal = new Animal(map, new Vector2d(5, 5));
-        map.place(animal);
 
         assertEquals(Optional.of(animal), map.objectAt(animal.getPosition()));
         assertEquals(Optional.empty(), map.objectAt(new Vector2d(1, 1)));

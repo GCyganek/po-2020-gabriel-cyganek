@@ -4,6 +4,7 @@ import pl.edu.agh.cs.lab2.Vector2d;
 import pl.edu.agh.cs.lab3.Animal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -12,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GrassField extends AbstractWorldMap{
     private final int grassFields;
     private final ArrayList<Grass> grassList = new ArrayList<>();
+    private final HashMap<Vector2d, Grass> grassHashMap = new HashMap<>();
     private final Vector2d upperRight = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     public GrassField(int grassFields) {
@@ -43,8 +45,9 @@ public class GrassField extends AbstractWorldMap{
     }
 
     public void placeGrass(Grass grass) {
-        if (!isOccupiedByGrass(grass.getPosition())) {
+        if (!grassHashMap.containsKey(grass.getPosition())) {
             grassList.add(grass);
+            grassHashMap.put(grass.getPosition(), grass);
         }
     }
 
@@ -62,24 +65,17 @@ public class GrassField extends AbstractWorldMap{
     }
 
     public boolean isOccupiedByGrass(Vector2d position) {
-        for (Grass grass: grassList) {
-            if (grass.getPosition().equals(position)) {
-                return true;
-            }
-        }
-        return false;
+        return grassHashMap.containsKey(position);
     }
 
     @Override
     public Optional<Object> objectAt(Vector2d position) {
         if (super.objectAt(position).equals(Optional.empty())) {
-            for (Grass grass: grassList) {
-                if (grass.getPosition().equals(position)) {
-                    return Optional.of(grass);
-                }
+            if (grassHashMap.containsKey(position)) {
+                return Optional.of(grassList.get(0));
             }
             return Optional.empty();
         }
-        else return Optional.of(animalList.get(0));
+        else return Optional.of(animalHashMap.get(position));
     }
 }

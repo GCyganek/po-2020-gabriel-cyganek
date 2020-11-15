@@ -31,9 +31,6 @@ class WorldTest {
         Animal animal1 = new Animal(map);
         Animal animal2 = new Animal(map, new Vector2d(3, 4));
 
-        assertTrue(map.place(animal1));
-        assertTrue(map.place(animal2));
-
         map.run(directions);
         assertEquals(animal1.getOrientation(), MapDirection.SOUTH);
         assertEquals(animal1.getPosition(), new Vector2d(2, 0));
@@ -56,21 +53,17 @@ class WorldTest {
         IWorldMap map = new RectangularMap(10, 5);
         Animal animal1 = new Animal(map);
         Animal animal2 = new Animal(map, new Vector2d(3, 4));
-        Animal animal3 = new Animal(map);
+        assertThrows(IllegalArgumentException.class, () -> {
+            Animal animal3 = new Animal(map);
+        });
+    }
 
-        assertTrue(map.place(animal1));
-        assertTrue(map.place(animal2));
-        assertFalse(map.place(animal3));
-
-        map.run(directions);
-        assertEquals(animal1.getOrientation(), MapDirection.SOUTH);
-        assertEquals(animal1.getPosition(), new Vector2d(2, 0));
-        assertEquals(animal2.getOrientation(), MapDirection.NORTH);
-        assertEquals(animal2.getPosition(), new Vector2d(3, 5));
-        assertEquals(animal3.getOrientation(), MapDirection.NORTH);
-        assertEquals(animal3.getPosition(), new Vector2d(2, 2));
-
-        Animal animal4 = new Animal(map, new Vector2d(3, 5));
-        assertFalse(map.place(animal4));
+    @Test
+    public void testWholeProgramWithBadArguments() {
+        String[] args = {"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f", "gfdgdfg"};
+        OptionsParser optionsParser = new OptionsParser();
+        assertThrows(IllegalArgumentException.class, () -> {
+            LinkedList<MoveDirection> directions = optionsParser.parse(args);
+        });
     }
 }

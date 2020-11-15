@@ -22,7 +22,10 @@ public class Vector2d {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        int hash = 15;
+        hash += this.x * 41;
+        hash += this.y * 12;
+        return hash;
     }
 
     @Override
@@ -57,5 +60,7 @@ public class Vector2d {
     public Vector2d opposite() {
         return new Vector2d(-x, -y);
     }
+
+
 
 }

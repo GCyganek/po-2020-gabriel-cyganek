@@ -17,6 +17,9 @@ public class Animal {
     public Animal(IWorldMap map, Vector2d initialPosition) {
         this.map = map;
         this.position = initialPosition;
+        if (!map.place(this)) throw new IllegalArgumentException(initialPosition +
+                " position is already occupied, the animal has not been placed on the map.");
+
     }
 
     public Vector2d getPosition() {

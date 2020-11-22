@@ -13,11 +13,6 @@ public class RectangularMap extends AbstractWorldMap {
     }
 
     @Override
-    protected Vector2d upperRight() {
-        return upperRight;
-    }
-
-    @Override
     public boolean canMoveTo(Vector2d position) {
         if (position.follows(lowerLeft) && position.precedes(upperRight)) {
             return !isOccupied(position);

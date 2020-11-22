@@ -5,24 +5,24 @@ import pl.edu.agh.cs.lab2.Vector2d;
 import pl.edu.agh.cs.lab3.Animal;
 import pl.edu.agh.cs.lab4.IWorldMap;
 import pl.edu.agh.cs.lab4.MapVisualiser;
+import pl.edu.agh.cs.lab7.IPositionChangeObserver;
+import pl.edu.agh.cs.lab7.MapBoundary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractWorldMap implements IWorldMap {
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     protected static final Vector2d lowerLeft = new Vector2d(0, 0);
     private final MapVisualiser thisMapVisualiser = new MapVisualiser(this);
-    protected ArrayList<Animal> animalList = new ArrayList<>();
     protected HashMap<Vector2d, Animal> animalHashMap = new HashMap<>();
+    protected MapBoundary mapBoundary = new MapBoundary();
 
     @Override
     public String toString() {
-        return thisMapVisualiser.draw(lowerLeft, upperRight());
+        return thisMapVisualiser.draw(mapBoundary.lowerLeft(), mapBoundary.upperRight());
     }
-
-    protected abstract Vector2d upperRight();
 
     @Override
     public abstract boolean canMoveTo(Vector2d position);
@@ -33,26 +33,21 @@ public abstract class AbstractWorldMap implements IWorldMap {
             return false;
         } else {
             animalHashMap.put(animal.getPosition(), animal);
-            animalList.add(animal);
+            animal.addObserver(mapBoundary);
+            mapBoundary.addElement(animal);
             return true;
         }
     }
 
     @Override
-    // nie uzywam values z animalHashMap zamiast animalList, gdyz chce zachowac pierwotna kolejnosc przemieszczania
-    // zwierzat, czyli kazde po kolei biorac pod uwage ich czas dodania do mapy. Przy wykorzystaniu animalHashMap
-    // ta kolejnosc zostalaby zachwiana podczas usuwania i dodawania zwierzecia do mapy z nowa pozycja po przemieszczeniu
     public void run(List<MoveDirection> directions) {
+        ArrayList<Animal> animalList = new ArrayList<>(animalHashMap.values());
         int animalIndex = 0;
+
         for (MoveDirection direction : directions) {
-            Animal currentAnimal = animalList.get(animalIndex);
-            Vector2d currentPosition = animalHashMap.get(currentAnimal.getPosition()).getPosition();
-            currentAnimal.move(direction);
-            if (currentAnimal.getPosition() != currentPosition) {
-                animalHashMap.remove(currentPosition);
-                animalHashMap.put(currentAnimal.getPosition(), currentAnimal);
-            }
+            animalList.get(animalIndex).move(direction);
             animalIndex = (animalIndex + 1) % animalList.size();
+            //System.out.println(this); //debug zeby sprawdzic, czy MapBoundary dziala
         }
     }
 
@@ -63,9 +58,12 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
     @Override
     public Optional<Object> objectAt(Vector2d position) {
-        if (animalHashMap.containsKey(position)) {
-            return Optional.of(animalHashMap.get(position));
-        }
-        return Optional.empty();
+        return Optional.ofNullable(animalHashMap.get(position));
+    }
+
+    @Override
+    public void positionChanged(IMapElement movedElement, Vector2d oldPosition, Vector2d newPosition) {
+        animalHashMap.remove(oldPosition);
+        animalHashMap.put(newPosition, (Animal) movedElement);
     }
 }
